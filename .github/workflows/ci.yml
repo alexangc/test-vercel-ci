@@ -1,0 +1,10 @@
+name: Loader pipeline
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello world"
