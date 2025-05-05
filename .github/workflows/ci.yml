@@ -6,6 +6,7 @@ on:
 env:
   API_BASE_URL: http://localhost:3000
   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_PROJECT: test-vercel-ci
 
 jobs:
   e2e:
@@ -27,6 +28,9 @@ jobs:
 
       - name: Install Vercel
         run: npm install -g vercel
+
+      - name: Link Vercel project
+        run: npx vercel link --yes --project ${{ env.VERCEL_PROJECT }} --token ${{ env.VERCEL_TOKEN }}
 
       - name: Start the vercel dev server
         run: |
