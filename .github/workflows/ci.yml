@@ -6,7 +6,7 @@ on:
 env:
   API_BASE_URL: http://localhost:3000
   # That token expires in 24h, don't fret
-  VERCEL_TOKEN: t4kQK1xr3Xqqn6H0CD2z04RL
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
 jobs:
   e2e:
