@@ -8,3 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Hello world"
+
+      - run:
+          response=$(curl -s https://test-vercel-ci-beta.vercel.app/api/echo) &&
+          echo $response
