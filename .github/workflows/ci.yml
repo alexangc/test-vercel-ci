@@ -21,9 +21,8 @@ jobs:
           npx vercel dev --token ${{ env.VERCEL_TOKEN }} --yes &
           # Store the PID to use later if needed
           # echo "VERCEL_PID=$!" >> $GITHUB_ENV
-          pwd
-          ls -ll
-          sleep 3
+      - name: debug
+        run: pwd && ls -ll && sleep 3
           
           # # Wait for server to be ready on port 3000
           # timeout=10
