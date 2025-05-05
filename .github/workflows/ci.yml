@@ -5,12 +5,20 @@ on:
 
 env:
   API_BASE_URL: https://test-vercel-ci-beta.vercel.app
+  # That token expires in 24h, don't fret
+  VERCEL_TOKEN: t4kQK1xr3Xqqn6H0CD2z04RL
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Hello world"
+
+      - run: npm install -g vercel
+
+      - run: vercel login --token ${{ env.VERCEL_TOKEN }}
+
+      - run: npx vercel dev
 
       - run:
           response=$(curl -s ${{ env.API_BASE_URL }}/api/echo) &&
