@@ -1,0 +1,59 @@
+name: Loader pipeline
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  API_BASE_URL: http://localhost:3000
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          npm ci --prefer-offline --no-audit --no-progress
+
+      - name: Install Vercel
+        run: npm install -g vercel
+
+      - name: Start the vercel dev server
+        run: |
+          npx vercel dev --token ${{ env.VERCEL_TOKEN }} --yes &
+          # Store the PID to use later if needed
+          echo "VERCEL_PID=$!" >> $GITHUB_ENV
+
+      - name: Wait for the dev server to be ready
+        run: |
+          # Wait for server to be ready on port 3000
+          # https://stackoverflow.com/a/50583452
+          attempt_counter=0
+          max_attempts=5
+
+          until $(curl --output /dev/null --silent --head --fail ${{ env.API_BASE_URL }}/api/echo); do
+              if [ ${attempt_counter} -eq ${max_attempts} ];then
+                echo "Max attempts reached"
+                exit 1
+              fi
+
+              printf '.'
+              attempt_counter=$(($attempt_counter+1))
+              sleep 1
+          done
+          echo "Server is ready!"
+
+      - name: Display the app's endpoint result
+        run:
+          response=$(curl -s ${{ env.API_BASE_URL }}/api/echo) &&
+          echo $response
