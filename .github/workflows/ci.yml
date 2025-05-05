@@ -16,9 +16,7 @@ jobs:
 
       - run: npm install -g vercel
 
-      - run: vercel login --token ${{ env.VERCEL_TOKEN }}
-
-      - run: npx vercel dev
+      - run: npx vercel dev --token ${{ env.VERCEL_TOKEN }}
 
       - run:
           response=$(curl -s ${{ env.API_BASE_URL }}/api/echo) &&
