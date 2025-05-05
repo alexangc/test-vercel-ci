@@ -3,6 +3,9 @@ on:
   push:
   workflow_dispatch:
 
+env:
+  API_BASE_URL: https://test-vercel-ci-beta.vercel.app
+
 jobs:
   e2e:
     runs-on: ubuntu-latest
@@ -10,5 +13,5 @@ jobs:
       - run: echo "Hello world"
 
       - run:
-          response=$(curl -s https://test-vercel-ci-beta.vercel.app/api/echo) &&
+          response=$(curl -s ${{ env.API_BASE_URL }}/api/echo) &&
           echo $response
