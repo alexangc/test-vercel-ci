@@ -37,6 +37,7 @@ jobs:
       - name: Wait for the dev server to be ready
         run: |
           # Wait for server to be ready on port 3000
+          # https://stackoverflow.com/a/50583452
           attempt_counter=0
           max_attempts=5
 
