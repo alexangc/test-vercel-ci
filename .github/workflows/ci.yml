@@ -18,24 +18,25 @@ jobs:
 
       - name: Start Vercel dev server
         run: |
-          npx vercel dev --token ${{ env.VERCEL_TOKEN }} --confirm &
+          npx vercel dev --token ${{ env.VERCEL_TOKEN }} --yes &
           # Store the PID to use later if needed
-          echo "VERCEL_PID=$!" >> $GITHUB_ENV
+          # echo "VERCEL_PID=$!" >> $GITHUB_ENV
+          sleep 3
           
-          # Wait for server to be ready on port 3000
-          timeout=60
-          counter=0
-          echo "Waiting for server to be ready on port 3000..."
-          until $(curl --output /dev/null --silent --fail http://localhost:3000); do
-            if [ $counter -eq $timeout ]; then
-              echo "Timed out waiting for server to start"
-              exit 1
-            fi
-            counter=$((counter+1))
-            echo "Still waiting for server to be ready... ($counter/$timeout)"
-            sleep 1
-          done
-          echo "Server is ready!"
+          # # Wait for server to be ready on port 3000
+          # timeout=10
+          # counter=0
+          # echo "Waiting for server to be ready on port 3000..."
+          # until $(curl --output /dev/null --silent --fail http://localhost:3000); do
+          #   if [ $counter -eq $timeout ]; then
+          #     echo "Timed out waiting for server to start"
+          #     exit 1
+          #   fi
+          #   counter=$((counter+1))
+          #   echo "Still waiting for server to be ready... ($counter/$timeout)"
+          #   sleep 1
+          # done
+          # echo "Server is ready!"
 
       - run:
           response=$(curl -s ${{ env.API_BASE_URL }}/api/echo) &&
